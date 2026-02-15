@@ -191,7 +191,7 @@ Let's break down what the code below does, step by step:
 ```{r plot-yearly-yes-issue, message=FALSE, fig.width=10, fig.height=6}
 unvotes %>%
   # Step 1: Filter for specific countries
-  filter(country %in% c("United Kingdom", "United States", "Turkey")) %>%
+  filter(country %in% c("Japan", "Singapore", "Mexico")) %>%
   
   # Step 2: Extract the year from the date
   mutate(year = year(date)) %>%
@@ -238,23 +238,21 @@ unvotes %>%
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+From the 1940s to the mid 1980s, the United Kingdom (U.K.) remained relatively consistent in the percentage of "yes" votes that it made towards Human Rights issues. During this time period, the U.K. voted yes around 30% of the time. From the mid 1980s to the mid 2000s, the percentage of "yes" votes increased and hit a maximum of around 50%. After the mid 2000s, there were less "yes" votes and it leveled off to around 37% by 2020.  
 
 **Task 2.2:** Which country appears most consistent in its voting patterns across all issues? Which appears least consistent?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+I think the United Kingdom appears most consistent in its voting patterns out of the three countries. In comparison, I think Turkey is the least consistent in its voting patterns out of the three countries. I am making these observations based on final percentage - initial percentage of yes votes.
 
 **Task 2.3:** On which issue do the three countries show the most similar voting patterns? On which issue do they differ the most?
 
 **Your answer:**
 
-Most similar: _____________________________________________________________
+Most similar: Arms Control and Disarmament
 
-Most different: ___________________________________________________________
+Most different: Palestinian Conflict
 
 ---
 
@@ -286,15 +284,13 @@ unvotes %>%
   )
 ```
 
-**Which countries did you choose?** _____, _____, and _____
+**Which countries did you choose?** Japan, Singapore, and Mexico
 
 **Task 3.2:** Describe one interesting pattern you notice in your new plot.
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
-
+One interesting pattern I notice in my new plot is that there was substantial overlap in the percentage of "yes" votes that Singapore and Mexico had across all issues, except for human rights.
 ---
 
 ## Exercise 4: Focus on One Issue
