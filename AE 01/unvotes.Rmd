@@ -1,6 +1,6 @@
 ---
 title: "AE 01 - UN Votes"
-author: "Your Name"
+author: "Max Asmar"
 date: "`r Sys.Date()`"
 output: 
   pdf_document:
@@ -159,7 +159,7 @@ unvotes %>%
   nrow()
 ```
 
-**Answer:** There are _____ countries in the dataset.
+**Answer:** There are 200 countries in the dataset.
 
 **Task 1.2:** What are the unique vote options?
 ```{r unique-votes}
@@ -168,7 +168,7 @@ unvotes %>%
   distinct(vote)
 ```
 
-**Answer:** The vote options are: ___, ___, and ___.
+**Answer:** The vote options are: no, yes, and abstain.
 
 **Task 1.3:** What issue categories are included?
 ```{r unique-issues}
@@ -177,7 +177,7 @@ unvotes %>%
   distinct(issue)
 ```
 
-**Answer:** The issue categories are: ___________________________________________
+**Answer:** The issue categories are: Human rights, Economic development, Colonialism, Palestinian Conflict, Arms control and disarmament, Nuclear weapons and nuclear material
 
 ---
 
