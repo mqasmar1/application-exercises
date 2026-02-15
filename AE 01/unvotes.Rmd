@@ -191,7 +191,7 @@ Let's break down what the code below does, step by step:
 ```{r plot-yearly-yes-issue, message=FALSE, fig.width=10, fig.height=6}
 unvotes %>%
   # Step 1: Filter for specific countries
-  filter(country %in% c("Japan", "Singapore", "Mexico")) %>%
+  filter(country %in% c("United States", "United Kingdom", "Turkey")) %>%
   
   # Step 2: Extract the year from the date
   mutate(year = year(date)) %>%
@@ -263,13 +263,21 @@ We can easily change which countries are being plotted by changing which countri
 **Note:** The country name should be spelled and capitalized exactly the same way as it appears in the data. See the [Appendix](#appendix) for a list of the countries in the data.
 
 **Task 3.1:** Modify the code to compare three different countries of your choice.
-```{r plot-custom-countries, message=FALSE, fig.width=10, fig.height=6, eval = FALSE}
-# Copy the code from above and modify the filter() line
+```{r plot-yearly-yes-issue2, message=FALSE, fig.width=10, fig.height=6}
 unvotes %>%
-  filter(country %in% c("___", "___", "___")) %>%  # Change these!
+  # Step 1: Filter for specific countries
+  filter(country %in% c("Japan", "Singapore", "Mexico")) %>%
+  
+  # Step 2: Extract the year from the date
   mutate(year = year(date)) %>%
+  
+  # Step 3: Group by country, year, and issue
   group_by(country, year, issue) %>%
+  
+  # Step 4: Calculate percentage of "yes" votes
   summarize(percent_yes = mean(vote == "yes")) %>%
+  
+  # Step 5: Create the plot
   ggplot(mapping = aes(x = year, y = percent_yes, color = country)) +
   geom_point(alpha = 0.4) +
   geom_smooth(method = "loess", se = FALSE) +
@@ -298,10 +306,10 @@ One interesting pattern I notice in my new plot is that there was substantial ov
 **Task 4.1:** Create a plot that shows voting patterns for ONLY the "Human rights" issue, but includes more countries.
 
 **Hint:** You'll need to add a `filter()` step for the issue, and modify the countries in the first `filter()`.
-```{r plot-human-rights, message=FALSE, fig.width=10, fig.height=6, eval = FALSE}
+```{r plot-human-rights, message=FALSE, fig.width=10, fig.height=6}
 unvotes %>%
-  filter(country %in% c("___", "___", "___", "___", "___")) %>%  # Choose 5 countries
-  filter(issue == "___") %>%  # Filter for Human rights
+  filter(country %in% c("China", "South Korea", "Taiwan", "North Korea", "Japan")) %>%  # Choose 5 countries
+  filter(issue == "Human rights") %>%  # Filter for Human rights
   mutate(year = year(date)) %>%
   group_by(country, year) %>%
   summarize(percent_yes = mean(vote == "yes")) %>%
@@ -310,7 +318,7 @@ unvotes %>%
   geom_smooth(method = "loess", se = FALSE) +
   scale_y_continuous(labels = percent) +
   labs(
-    title = "___",  # Update title
+    title = "% of Yes votes for Human Rights Issues across countries",  # Update title
     subtitle = "1946 to 2019",
     y = "% Yes",
     x = "Year",
@@ -320,20 +328,19 @@ unvotes %>%
 
 **Describe what you see:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+I see that after 1970, there was no data collected/reported in the unvotes package for Taiwan. I also see that  for South Korea, North Korea, Japan, and China, that there was a net decrease in the percentage of "yes" votes for human rights issues from when the data was first collected.
 
 ---
 
 ## Exercise 5: Calculate Summary Statistics
 
 **Task 5.1:** Calculate the overall percentage of "yes" votes for each country across all issues and all years.
-```{r overall-yes-percent, eval = FALSE}
+```{r overall-yes-percent}
 country_yes_percent <- unvotes %>%
-  group_by(___) %>%
+  group_by(country) %>%
   summarize(
     total_votes = n(),
-    percent_yes = mean(vote == "___") * 100
+    percent_yes = mean(vote == "yes") * 100
   ) %>%
   arrange(desc(percent_yes))
 
@@ -341,25 +348,25 @@ country_yes_percent <- unvotes %>%
 head(country_yes_percent, 10)
 ```
 
-**Which country has the highest overall percentage of "yes" votes?** _____
+**Which country has the highest overall percentage of "yes" votes?** Seychelles has the highest overall percentage of "yes" votes at 98% of 2304 total votes.
 
-**Which has the lowest?** _____
+**Which has the lowest?** Zanzibar has the lowest percentage of "yes" votes at 0%, however it only has 1 total vote. The United States has the second lowest percentage of "yes" votes at 20.7% of 5718 total votes.
 
 **Task 5.2:** Calculate the percentage of "yes" votes by issue, averaged across all countries and all years.
-```{r issue-yes-percent, eval = FALSE}
+```{r issue-yes-percent}
 issue_yes_percent <- unvotes %>%
-  group_by(___) %>%
+  group_by(issue) %>%
   summarize(
     percent_yes = mean(vote == "yes") * 100
   ) %>%
-  arrange(desc(percent_yes))
+  arrange(percent_yes)
 
 issue_yes_percent
 ```
 
-**Which issue has the most "yes" votes on average?** _____________________
+**Which issue has the most "yes" votes on average?** The Palestinian conflict has the most "yes" votes on average, with about 83.9% "yes" votes.
 
-**Which has the least?** ____________________
+**Which has the least?** Human rights issues have the least "yes" votes on average, with about 73.4% "yes" votes.
 
 ---
 
