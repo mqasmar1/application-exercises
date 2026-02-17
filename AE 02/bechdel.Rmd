@@ -437,17 +437,15 @@ Once everything works in HTML:
 
 **What was the most interesting finding about the Bechdel test and movie finances?**
 
-___________________________________________________________________________
-___________________________________________________________________________
+The most interesting finding about the Bechdel test and movie finances for me was learning that movies that pass the Bechdel test tended to have higher median ROIs than movies that failed the Bechdel test. 
 
 **What was the most challenging part of this exercise?**
 
-___________________________________________________________________________
+The most challenging part of this exercise was comparing the mean ROI with the median ROI for movies that failed/passed the Bechdel test. Each measure of center gave different results about which group had a higher ROI generally.
 
 **How did zooming in on the plot change your interpretation of the data?**
 
-___________________________________________________________________________
-___________________________________________________________________________
+Zooming in on the plot allowed me to actually identify the differences in ROI of movies passing and failing the Bechdel test. Before, it felt like everything was squished together and I couldn't actually see the box plot.
 
 ---
 
