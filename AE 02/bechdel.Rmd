@@ -1,6 +1,6 @@
 ---
 title: "AE 02 - Bechdel Test"
-author: "Your Name"
+author: "Max Asmar"
 date: "`r Sys.Date()`"
 output: 
   pdf_document:
@@ -115,9 +115,9 @@ bechdel90_13 %>%
   count(binary)
 ```
 
-**How many movies passed the test?** _____
+**How many movies passed the test?** 753 movies
 
-**How many failed?** _____
+**How many failed?** 862 movies
 
 ---
 
@@ -150,20 +150,19 @@ bechdel90_13 %>%
 
 **Your answer:**
 
-Movies that ___________ the test have higher median budgets.
+Movies that fail the test have higher median budgets.
 
 **Task 2.2:** Which movies have higher median domestic gross: those that pass or fail?
 
 **Your answer:**
 
-Movies that ___________ the test have higher median domestic gross.
+Movies that fail the test have higher median domestic gross.
 
 **Task 2.3:** What might explain these patterns?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+I think that movies that fail the Bechdel test tend to have higher median budgets and higher median domestic gross because many movies that become popular follow tropes about men and only have women as supporting characters to those men. This could cause new directors to follow these same patterns.
 
 ---
 
@@ -180,9 +179,9 @@ Next, let's take a look at how median budget and gross vary by a more detailed i
 ## Exercise 3: Group by Detailed Test Results
 
 **Fill in the blank to group by `clean_test`:**
-```{r detailed-summary, eval = FALSE}
+```{r detailed-summary}
 bechdel90_13 %>%
-  group_by(___) %>%
+  group_by(clean_test) %>%
   summarise(
     med_budget = median(budget_2013),
     med_domgross = median(domgross_2013, na.rm = TRUE),
@@ -192,11 +191,11 @@ bechdel90_13 %>%
 
 **Task 3.1:** Which category has the highest median budget?
 
-**Your answer:** _____
+**Your answer:** The "notalk" category has the highest median budget.
 
 **Task 3.2:** Which category has the highest median international gross?
 
-**Your answer:** _____
+**Your answer:** The "notalk" category has the highest median international gross.
 
 ---
 
@@ -235,18 +234,17 @@ bechdel90_13 %>%
 
 **Task 4.1:** What is the movie with the highest ROI?
 
-**Your answer:** ___________________________________________________________
+**Your answer:** Paranormal Activity is the movie with the highest ROI in the dataset.
 
 **Task 4.2:** What is its ROI value?
 
-**Your answer:** _____
+**Your answer:** It's ROI value is 671.
 
 **Task 4.3:** Does this movie surprise you? Why or why not?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+Yes, Paranormal Activity being the movie with the highest ROI in the dataset surprises me because it passes the Bechdel test and I have not heard of it before.
 
 ---
 
@@ -264,7 +262,7 @@ ggplot(data = bechdel90_13,
   labs(
     title = "Return on investment vs. Bechdel test result",
     x = "Detailed Bechdel result",
-    y = "___",
+    y = "Return on Investment",
     color = "Binary Bechdel result"
   )
 ```
@@ -275,8 +273,7 @@ ggplot(data = bechdel90_13,
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+The plot is hard to interpret because there are movies with extremely high returns on investment that force the y axis scale to be too high.
 
 ---
 
@@ -291,13 +288,13 @@ bechdel90_13 %>%
 
 **Task 5.2:** How many movies have ROI greater than 400?
 
-**Your answer:** _____
+**Your answer:** 3 movies have returns on investment greater than 400.
 
 **Task 5.3:** What do you notice about the budgets of these high-ROI movies?
 
 **Your answer:**
 
-___________________________________________________________________________
+I notice that the budgets for these high return on investment movies are extremely low compared to the median budgets that we determined in Exercise 1. More specifically, the high-ROI movies have budgets less than 3% of the median budget.
 
 ---
 
@@ -312,7 +309,7 @@ ggplot(data = bechdel90_13,
   geom_boxplot() +
   labs(
     title = "Return on investment vs. Bechdel test result",
-    subtitle = "___", # Something about zooming in to a certain level
+    subtitle = "Focused on movies with ROI<15 ", # Something about zooming in to a certain level
     x = "Detailed Bechdel result",
     y = "Return on investment",
     color = "Binary Bechdel result"
@@ -335,22 +332,19 @@ ggplot(data = bechdel90_13,
 
 **Task 7.1:** Looking at the zoomed plot, which category has the highest median ROI?
 
-**Your answer:** _____
+**Your answer:** According to the box plot, movies that have an "ok" clean_test score have the highest median return on investment.
 
 **Task 7.2:** Do movies that pass the Bechdel test (binary = PASS) appear to have higher or lower ROI than those that fail?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+Movies that pass the Bechdel test appear to have higher returns on investment than those that fail the Bechdel test.
 
 **Task 7.3:** What does this suggest about the financial argument for including women in films?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
-___________________________________________________________________________
+This data suggests that including women in films has an average higher return on investment, meaning that it is a smarter financial choice to include women in films that talk to each other about subjects other than men.
 
 ---
 
@@ -359,24 +353,23 @@ ___________________________________________________________________________
 **Task 8.1:** Calculate the mean ROI (not median) for movies that pass vs. fail the Bechdel test.
 
 **Hint:** Use `group_by()` and `summarise()` like we did earlier, but with `mean()` instead of `median()`.
-```{r mean-roi, eval = FALSE}
+```{r mean-roi}
 bechdel90_13 %>%
-  group_by(___) %>%
+  group_by(binary) %>%
   summarise(
-    mean_roi = mean(___, na.rm = TRUE)
+    mean_roi = mean(roi, na.rm = TRUE)
   )
 ```
 
-**Mean ROI for PASS:** _____
+**Mean ROI for PASS:** 7.99
 
-**Mean ROI for FAIL:** _____
+**Mean ROI for FAIL:** 8.36
 
 **Task 8.2:** How do these means compare to the medians we saw earlier? Why might they be different?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+The mean ROIs of the movies in the dataset were higher than the medians that we saw earlier. I think that they are different because the mean is more impacted by the very large outliers that we saw earlier in Exercise 5 that had ROIs greater than 15.
 
 ---
 
