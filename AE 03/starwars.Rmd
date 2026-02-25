@@ -1,6 +1,6 @@
 ---
 title: "AE 03 - Visualizing Star Wars Characters"
-author: "Your Name"
+author: "Max Asmar"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -74,25 +74,25 @@ glimpse(starwars)
 
 **Answer the following questions:**
 
-**How many observations (rows) are there?** _____
+**How many observations (rows) are there?** 87 observations
 
-**How many variables (columns) are there?** _____
+**How many variables (columns) are there?** 14 variables
 
 **Name three numerical variables:**
 
-1. _____
-2. _____
-3. _____
+1. Height
+2. Mass
+3. Birth Year
 
 **Name three categorical variables:**
 
-1. _____
-2. _____
-3. _____
+1. Hair Color
+2. Skin Color
+3. Eye Color
 
 **What does each observation represent?**
 
-___________________________________________________________________________
+Each observation is a set of several categorical and numerical characteristics for each Star Wars Character in the dataset.
 
 ---
 
