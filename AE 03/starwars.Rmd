@@ -101,7 +101,7 @@ Each observation is a set of several categorical and numerical characteristics f
 The plot below maps several variables to aesthetics. However, there's an issue with how color is being used.
 
 **Original code:**
-```{r scatterplot-original, eval=FALSE}
+```{r scatterplot-original}
 ggplot(starwars, 
        aes(x = height, y = mass, color = gender, size = birth_year)) +
   geom_point(color = "pink")
@@ -111,8 +111,7 @@ ggplot(starwars,
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+The 'color = gender' mapping is not showing up on the graph. Instead, all of the data points are pink.
 
 **Task 2.2:** Why did this happen?
 
@@ -120,8 +119,7 @@ ___________________________________________________________________________
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+I think the 'color = gender' mapping was overridden by the 'color = pink' statement inside the geom_point() argument. Making the color of the data pink inside the geom_point function makes all of the points pink, regardless of what was written before.
 
 **The issue:** When you set `color = "pink"` inside `geom_point()`, it overrides the aesthetic mapping `color = gender` from `aes()`.
 
