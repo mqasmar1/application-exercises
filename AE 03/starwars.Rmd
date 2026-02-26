@@ -230,14 +230,14 @@ Pick a numerical variable and a categorical variable and make a visualization to
 - height by gender
 - mass by species
 - birth_year by sex
-```{r num-cat, eval = FALSE}
+```{r num-cat}
 # Your code here
-ggplot(starwars, aes(x = ___, y = ___)) +
+ggplot(starwars, aes(x = gender, y = height)) +
   geom_boxplot(fill = "lightblue") +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "The height of different genders in the Star Wars Universe",
+    x = "Gender",
+    y = "Height (cm)"
   )
 ```
 
@@ -245,9 +245,7 @@ ggplot(starwars, aes(x = ___, y = ___)) +
 
 What does this visualization tell you about the relationship between these two variables?
 
-___________________________________________________________________________
-___________________________________________________________________________
-___________________________________________________________________________
+The visualization tells me that masculine characters tend have a higher median height than other characters (feminine, NA). I notice that feminine characters tend to be the shortest (lowest median height), while characters that do not have a gender tend to lie somewhere in the middle.  
 
 ---
 
@@ -262,30 +260,30 @@ Pick a single categorical variable from the dataset and make a bar plot of its d
 - species
 - eye_color
 - hair_color
-```{r barplot,, eval = FALSE}
+```{r barplot}
 # Your code here
-ggplot(starwars, aes(x = ___)) +
+ggplot(starwars, aes(x = eye_color)) +
   geom_bar(fill = "coral") +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Distribution of eye colors in the Star Wars Universe",
+    x = "Eye color",
+    y = "frequency"
   )
 ```
 
 **Task 6.1:** Which category has the most observations?
 
-**Your answer:** _____
+**Your answer:** The brown eye color category has the most observations.
 
 **Task 6.2:** If your plot has many categories with small bars that are hard to read, try flipping the coordinates:
-```{r barplot-flipped, eval = FALSE}
+```{r barplot-flipped}
 # Same code as above, but add coord_flip() at the end
-ggplot(starwars, aes(x = ___)) +
+ggplot(starwars, aes(x = eye_color)) +
   geom_bar(fill = "coral") +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Distribution of eye colors in the Star Wars Universe",
+    x = "Eye color",
+    y = "Frequency"
   ) +
   coord_flip()
 ```
