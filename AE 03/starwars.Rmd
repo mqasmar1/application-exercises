@@ -147,10 +147,10 @@ ggplot(starwars,
        aes(x = height, y = mass, color = gender, size = birth_year)) +
   geom_point(color = "#30509C") +
   labs(
-    title = "___",           # Title about relationship between height and mass
-    x = "___",               # What is on the x-axis?
-    y = "___",               # What is on the y-axis?
-    size = "___"             # What does size represent?
+    title = "Correlation Between Height and Mass of Star Wars Characters",           # Title about relationship between height and mass
+    x = "height (cm)",               # What is on the x-axis?
+    y = "mass (kg)",               # What is on the y-axis?
+    size = "Birth Year"             # What does size represent?
   )
 ```
 
@@ -164,7 +164,7 @@ ggplot(starwars,
 
 **Your answer:**
 
-___________________________________________________________________________
+There is no 'color' label in the labs() function because the color of each point has already been determined by the geom_point function.
 
 ---
 
@@ -177,21 +177,21 @@ Pick a single numerical variable and make a histogram of it. Select a reasonable
 # Choose a variable and look at its range
 starwars %>%
   summarise(
-    min_height = min(height, na.rm = TRUE),
-    max_height = max(height, na.rm = TRUE),
-    mean_height = mean(height, na.rm = TRUE)
+    min_mass = min(mass, na.rm = TRUE),
+    max_mass = max(mass, na.rm = TRUE),
+    mean_mass = mean(mass, na.rm = TRUE)
   )
 ```
 
 **Now create your histogram:**
-```{r histogram, eval = FALSE}
+```{r histogram}
 # Fill in the blanks
-ggplot(starwars, aes(x = ___)) +
-  geom_histogram(binwidth = ___, fill = "steelblue", color = "white") +
+ggplot(starwars, aes(x = mass)) +
+  geom_histogram(binwidth = 20, fill = "steelblue", color = "white") +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "Mass of Star Wars Characters",
+    x = "Mass (kg)",
+    y = "Frequency"
   )
 ```
 
@@ -205,15 +205,13 @@ ggplot(starwars, aes(x = ___)) +
 
 **Your answer:**
 
-I chose a binwidth of _____ because ______________________________________
-___________________________________________________________________________
+I chose a binwidth of 20 because it allows me to see 9 bins while a binwidth of 50 only allows me to see 5 bins. I think a binwidth of 20 allows me to better see the shape of the distribution and which values the mass is concentrated around for all characters.
 
 **Task 4.2:** Describe the distribution. Is it symmetric, skewed left, or skewed right? Are there any outliers?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+The distribution is skewed right. Most masses of the Star Wars characters are around ~125 kg while there are a few observations with masses beyond ~125kg.
 
 ---
 
