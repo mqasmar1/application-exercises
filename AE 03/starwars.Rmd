@@ -3,14 +3,14 @@ title: "AE 03 - Visualizing Star Wars Characters"
 author: "Max Asmar"
 date: "`r Sys.Date()`"
 output: 
-  html_document:
-    toc: true
-    toc_float: true
-    code_folding: show
   pdf_document:
     toc: true
     latex_engine: xelatex
     keep_tex: false
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
@@ -308,16 +308,17 @@ Pick two categorical variables and make a visualization to visualize the relatio
 - gender and hair_color
 
 **Option 1: Stacked bar plot**
-```{r cat-cat-stacked, eval = FALSE}
+```{r cat-cat-stacked}
 # Your code here
-ggplot(starwars, aes(x = ___, fill = ___)) +
+ggplot(starwars, aes(x = hair_color, fill = gender)) +
   geom_bar() +
   labs(
-    title = "___",
-    x = "___",
+    title = "Distribution of hair colors with respect to gender",
+    x = "Hair Color",
     y = "Count",
-    fill = "___"
-  )
+    fill = "Gender"
+  ) +
+  coord_flip()
 ```
 
 **Option 2: Grouped bar plot (side-by-side)**
@@ -337,9 +338,7 @@ ggplot(starwars, aes(x = ___, fill = ___)) +
 
 What does this visualization tell you about the relationship between these two variables?
 
-___________________________________________________________________________
-___________________________________________________________________________
-___________________________________________________________________________
+My stacked bar-plot visualization tells me that most hair colors are primarily portrayed by masculine characters, with the exception of blonde hair and auburn white hair and auburn grey hair, which are represented by only feminine characters.
 
 ---
 
@@ -362,21 +361,21 @@ Pick two numerical variables and two categorical variables and make a visualizat
 - species (categorical - use for facets, maybe filter to top 3-4 species)
 
 **Starter template:**
-```{r multi, eval=FALSE}
+```{r multi}
 # You might want to filter first to avoid too many facets
 starwars_filtered <- starwars %>%
-  filter(species %in% c("Human", "Droid", "___"))  # Pick 3-4 species
+  filter(species %in% c("Human", "Droid", "Hutt"))  # Pick 3-4 species
 
 # Your plot here
 ggplot(starwars_filtered, 
-       aes(x = ___, y = ___, color = ___)) +
+       aes(x = height, y = mass, color = gender)) +
   geom_point(size = 3) +
-  facet_wrap(~ ___) +
+  facet_wrap(~ species) +
   labs(
-    title = "___",
-    x = "___",
-    y = "___",
-    color = "___"
+    title = "Heights and Masses of Star Wars Characters across genders and species",
+    x = "Height (cm)",
+    y = "Mass (kg)",
+    color = "Gender"
   )
 ```
 
@@ -384,10 +383,7 @@ ggplot(starwars_filtered,
 
 What patterns do you notice? How do the relationships differ across the facets?
 
-___________________________________________________________________________
-___________________________________________________________________________
-___________________________________________________________________________
-___________________________________________________________________________
+I notice that the droid characters in the dataset are all masculine. I also notice that there is only one observation of a Hutt species character who has a very high mass compared to the rest of the dataset in my chart. I notice across the facets that as height increases, mass also increases. They have a positive correlation.
 
 ---
 
@@ -397,21 +393,19 @@ ___________________________________________________________________________
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+Personally, I enjoyed using the histogram the most to explore the data because it was very readable and easier to identify patterns in the dataset, but it sacrificed detail. In comparison, the box plots and dot plots were more detailed. The box plot also provided information such as median and quartile ranges. 
 
 **Task 9.2:** What was the most interesting pattern or relationship you found?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+The most interesting pattern I found was how yellow and orange eye colors were relatively common in the Star Wars Universe. I was expecting green to be relatively common but on the histogram, there was only a 1-2 observations.
 
 **Task 9.3:** What did you find most challenging about creating these visualizations?
 
 **Your answer:**
 
-___________________________________________________________________________
+I found plotting multiple variables in the same plot in Exercise 8 to be the most challenging, especially on a dot plot. I have not done this before, so it was interesting to see how multiple variables can be visualized in the same plot.
 
 ---
 
