@@ -1,6 +1,6 @@
 ---
 title: "AE 04 - Hotel Bookings - Data Wrangling"
-author: "Your Name"
+author: "Max Asmar"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -87,15 +87,15 @@ skim(hotels)
 
 **Answer the following questions:**
 
-**How many observations (bookings) are in the dataset?** _____
+**How many observations (bookings) are in the dataset?** 119390 observations
 
-**How many variables are there?** _____
+**How many variables are there?** 32 variables
 
-**What is the data type of the `hotel` variable?** _____
+**What is the data type of the `hotel` variable?** character
 
-**What is the data type of the `lead_time` variable?** _____
+**What is the data type of the `lead_time` variable?** numeric
 
-**How many missing values does the `children` variable have?** _____
+**How many missing values does the `children` variable have?** 4 missing values
 
 **Note:** A definition of all variables is given in the [Data dictionary] section at the end. You don't need to memorize all variables, but browse through them to get familiar with the dataset.
 
@@ -106,12 +106,12 @@ skim(hotels)
 Are people traveling on a whim? Let's see...
 
 Fill in the blanks for filtering for hotel bookings where the guest is **not** from the US (`country` code `"USA"`) and the `lead_time` is less than 1 day.
-```{r travel-whim, eval = FALSE}
+```{r travel-whim, eval = TRUE}
 #don't forget to switch eval = FALSE to TRUE after filling in the blanks
 hotels %>%
   filter(
-    country ___ "USA",      # != means "not equal to"
-    lead_time ___ ___       # < means "less than"
+    country != "USA",      # != means "not equal to"
+    lead_time < 1       # < means "less than"
   )
 ```
 
@@ -123,14 +123,13 @@ hotels %>%
 
 **Task 2.1:** How many bookings meet these criteria?
 
-**Your answer:** _____ bookings
+**Your answer:** 6174 bookings
 
 **Task 2.2:** What does this tell you about spontaneous non-US travelers?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+This tells me that there are are many non-US travelers who book within 1 day of their vacation in Portugal. I think this makes up a high percentage of non-US travelers because this makes up around 5% of the overall dataset.
 
 ---
 
