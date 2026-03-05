@@ -141,10 +141,10 @@ Fill in the blanks:
 
 - Replace `[AT LEAST]` with the logical operator for "at least" (in two places)
 - Replace `[OR]` with the logical operator for "or"
-```{r some-children, eval = FALSE}
+```{r some-children, eval = TRUE}
 hotels %>%
   filter(
-    children [AT LEAST] 1 [OR] babies [AT LEAST] 1
+    children >= 1 | babies >= 1
   )
 ```
 
@@ -153,13 +153,13 @@ hotels %>%
 - "At least 1" means "greater than or equal to 1": `>=`
 - "Or" in R: `|`
 
-**How many bookings have at least 1 child or baby?** _____ bookings
+**How many bookings have at least 1 child or baby?** 9332 bookings
 
 **What percentage of total bookings is this?**
 
 Calculate: (bookings with children/babies) / (total bookings) × 100
 
-**Your answer:** About _____% of bookings include children or babies.
+**Your answer:** About 82% of bookings include children or babies. I determined this by evaluating 9332*100/11390 in the console
 
 ---
 
@@ -169,38 +169,37 @@ Do you think it's more likely to find bookings with children or babies in city h
 
 **Task 4.1:** Make a prediction first.
 
-**Your prediction:** I think ___________ hotels will have more bookings with children/babies because ________________________________________________
+**Your prediction:** I think resort hotels will have more bookings with children/babies because they typically have more amenities and services that appeal to children such as slides or pools and more space to explore.
 
 **Task 4.2:** Filter for resort hotel bookings with more than 1 child **or** baby.
-```{r resort-children, eval = FALSE}
+```{r resort-children, eval = TRUE}
 # Filter for resort hotels with children or babies
 hotels %>%
   filter(
-    hotel == "___",                    # Resort Hotel
-    children ___ 1 | babies ___ 1      # At least 1 child OR baby
+    hotel == "Resort Hotel",                    # Resort Hotel
+    children >= 1 | babies >= 1      # At least 1 child OR baby
   )
 ```
 
-**Number of resort hotel bookings with children/babies:** _____
+**Number of resort hotel bookings with children/babies:** There are 3929 resort hotel bookings with children/babies.
 
 **Task 4.3:** Now do the same for city hotels.
-```{r city-children,eval=FALSE}
+```{r city-children,eval=TRUE}
 # Filter for city hotels with children or babies
 hotels %>%
   filter(
-    hotel == "___",                    # City Hotel
-    children ___ 1 | babies ___ 1      # At least 1 child OR baby
+    hotel == "City Hotel",                    # City Hotel
+    children >= 1 | babies >= 1      # At least 1 child OR baby
   )
 ```
 
-**Number of city hotel bookings with children/babies:** _____
+**Number of city hotel bookings with children/babies:** There are 5403 city hotel bookings with children/babies.
 
 **Task 4.4:** Which hotel type has more bookings with children/babies? Was your prediction correct?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+City hotels have more bookings with children/babies. This means that my prediction was incorrect. In fact, the number of city hotels is around 31.6% greater than the number of resort hotels with children/babies.
 
 ---
 
@@ -209,11 +208,11 @@ ___________________________________________________________________________
 Create a frequency table of the number of `adults` in a booking. Display the results in descending order so the most common observation is on top. 
 
 **What is the most common number of adults in bookings in this dataset? Are there any surprising results?**
-```{r adults-frequency, eval = FALSE}
+```{r adults-frequency, eval = TRUE}
 # Create frequency table
 hotels %>%
-  count(___, sort = ___) %>%    # Count adults, sort in descending order
-  arrange(desc(___))             # Arrange by count (n) in descending order
+  count(adults, sort = TRUE) %>%    # Count adults, sort in descending order
+  arrange(desc(n))             # Arrange by count (n) in descending order
 ```
 
 **Hints:**
@@ -224,14 +223,13 @@ hotels %>%
 
 **Task 5.1:** What is the most common number of adults?
 
-**Your answer:** _____ adults
+**Your answer:** 2 adults
 
 **Task 5.2:** What surprising result(s) do you see?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+One surprising result that I see is that bookings with 0 adults (403 cases) are much more common/frequent than bookings with 4 adults (62 cases). I think it is also surprising that there was a booking in which there were 55 adults.
 
 **Hint:** Look at the minimum and maximum values. Do they make sense for hotel bookings?
 
