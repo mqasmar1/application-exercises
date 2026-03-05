@@ -3,14 +3,14 @@ title: "AE 04 - Hotel Bookings - Data Wrangling"
 author: "Max Asmar"
 date: "`r Sys.Date()`"
 output: 
-  html_document:
-    toc: true
-    toc_float: true
-    code_folding: show
   pdf_document:
     toc: true
     latex_engine: xelatex
     keep_tex: false
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
 ---
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE)
@@ -414,7 +414,7 @@ The select() function was most useful in this exercise because it allowed me to 
 
 **What would you want to investigate further in this dataset?**
 
-I want to investigate the company variable and analyze how differnt booking companies are associated with lower or higher ADR's.
+I want to investigate the company variable and analyze how differnt booking companies are associated with lower or higher ADR's. I think it would be interesting to see the correlation between those variables.
 
 ---
 
