@@ -159,7 +159,7 @@ hotels %>%
 
 Calculate: (bookings with children/babies) / (total bookings) × 100
 
-**Your answer:** About 82% of bookings include children or babies. I determined this by evaluating 9332*100/11390 in the console
+**Your answer:** About 7.82% of bookings include children or babies. I determined this by evaluating 9332*100/119390 in the console
 
 ---
 
@@ -240,42 +240,40 @@ One surprising result that I see is that bookings with 0 adults (403 cases) are 
 Repeat Exercise 5, once for canceled bookings (`is_canceled` coded as 1) and once for not canceled bookings (`is_canceled` coded as 0). What does this reveal about the surprising results you spotted in the previous exercise?
 
 **Task 6.1:** Frequency table for CANCELED bookings.
-```{r canceled-adults, eval = FALSE}
+```{r canceled-adults, eval = TRUE}
 # Filter for canceled bookings, then count adults
 hotels %>%
-  filter(is_canceled == ___) %>%
-  count(___, sort = TRUE)
+  filter(is_canceled == 1) %>%
+  count(adults, sort = TRUE)
 ```
 
 **Task 6.2:** Frequency table for NOT CANCELED bookings.
-```{r not-canceled-adults, eval = FALSE}
+```{r not-canceled-adults, eval = TRUE}
 # Filter for not canceled bookings, then count adults
 hotels %>%
-  filter(is_canceled == ___) %>%
-  count(___, sort = TRUE)
+  filter(is_canceled == 0) %>%
+  count(adults, sort = TRUE)
 ```
 
 **Task 6.3:** What does this reveal about the surprising results from Exercise 5?
 
 **Your answer:**
 
-The unusual values (like 0 adults) appear more frequently in _____________ bookings. This suggests that _____________________________________________
-___________________________________________________________________________
-___________________________________________________________________________
+The unusual values (like 0 adults) appear more frequently in not-canceled bookings. This suggests that in reality, there might be more instances where the number of adults at a hotel is not 1 or 2.
 
 ---
 
 ## Exercise 7: Group Summary Statistics
 
 Calculate minimum, mean, median, and maximum average daily rate (`adr`) grouped by `hotel` type so that you can get these statistics separately for resort and city hotels. Which type of hotel is higher, on average?
-```{r hotel-adr-summary, eval = FALSE}
+```{r hotel-adr-summary, eval = TRUE}
 hotels %>%
-  group_by(___) %>%
+  group_by(hotel) %>%
   summarise(
-    min_adr = min(___),
-    mean_adr = mean(___),
-    median_adr = median(___),
-    max_adr = max(___)
+    min_adr = min(adr),
+    mean_adr = mean(adr),
+    median_adr = median(adr),
+    max_adr = max(adr)
   )
 ```
 
@@ -289,23 +287,22 @@ hotels %>%
 
 | Statistic | Resort Hotel | City Hotel |
 |:----------|:-------------|:-----------|
-| Minimum   |              |            |
-| Mean      |              |            |
-| Median    |              |            |
-| Maximum   |              |            |
+| Minimum   |      -6.38        |    0        |
+| Mean      |      95        |      105      |
+| Median    |      75        |      99.9      |
+| Maximum   |      508        |     5400       |
 
 **Task 7.2:** Which type of hotel has a higher average daily rate?
 
 **Your answer:**
 
-___________________________________________________________________________
+City hotels have a higher daily rate on average. The mean ADR of city hotels is 105 euros while the mean ADR of resort hotels is 95 euros.
 
 **Task 7.3:** What unusual values do you notice in the summary statistics?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+One unusual value I noticed is that the maximum ADR of the City Hotels is 5400 while the maximum ADR of the resort hotels is 508. I also noticed that the minimum ADR for the resort hotel is -6.38 which implies that at least one resort hotel lost money from a room. 
 
 **Hint:** Look at the minimum and maximum values. Are they realistic?
 
@@ -318,69 +315,66 @@ We observe two unusual values in the summary statistics above -- a negative mini
 **Hint:** For example, you can `filter` for the given `adr` amounts and `select` the relevant columns.
 
 **Task 8.1:** Investigate the negative ADR value.
-```{r negative-adr, eval = FALSE}
+```{r negative-adr, eval = TRUE}
 # Filter for negative adr and select relevant columns
 hotels %>%
-  filter(adr ___ ___) %>%                           # adr less than 0
+  filter(adr < 0) %>%                           # adr less than 0
   select(hotel, adr, arrival_date_year, 
          arrival_date_month, adults, children, babies)
 ```
 
 **Your findings:**
 
-**Hotel type:** _____
+**Hotel type:** Resort Hotel
 
-**Arrival year:** _____
+**Arrival year:** 2017
 
-**Arrival month:** _____
+**Arrival month:** March
 
-**Number of adults:** _____
+**Number of adults:** 2
 
-**Number of children:** _____
+**Number of children:** 0
 
-**Number of babies:** _____
+**Number of babies:** 0
 
 **Why might this ADR be negative?**
 
-___________________________________________________________________________
+The ADR might be negative because there were not enough rooms sold for the hotel to break profit. Because this observation has no children nor babies, just 2 adults, they only need 1 room. This could cause the hotel to lose money because the couple did not spend enough. 
 
 **Task 8.2:** Investigate the very high maximum ADR.
 
 First, determine what the maximum is from Exercise 7, then filter for it.
-```{r high-adr, eval = FALSE}
+```{r high-adr, eval = TRUE}
 # Filter for the maximum adr you found in Exercise 7
 hotels %>%
-  filter(adr == ___) %>%                            # Use the max value you found
+  filter(adr == 5400) %>%                            # Use the max value you found
   select(hotel, adr, arrival_date_year, 
          arrival_date_month, adults, children, babies)
 ```
 
 **Your findings:**
 
-**Hotel type:** _____
+**Hotel type:** City Hotel 
 
-**Arrival year:** _____
+**Arrival year:** 2016
 
-**Arrival month:** _____
+**Arrival month:** March
 
-**Number of adults:** _____
+**Number of adults:** 2
 
-**Number of children:** _____
+**Number of children:** 0
 
-**Number of babies:** _____
+**Number of babies:** 0
 
 **Why might this ADR be so high? Is this realistic?**
 
-___________________________________________________________________________
-___________________________________________________________________________
+This ADR might be high because there were a lot of adults that day who filled up all of the rooms of the hotel, which caused the revenue per room to compound.
 
 **Task 8.3:** Should these unusual values be removed from the dataset? Why or why not?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
-___________________________________________________________________________
+No, the values should not be removed from the dataset because the median and interquartile ranges can help measure the dataset in a way that is accurate and not as skewed by the outliers. 
 
 ---
 
@@ -412,17 +406,15 @@ hotels %>%
 
 **What was the most interesting finding from this data?**
 
-___________________________________________________________________________
-___________________________________________________________________________
+To me, the most interesting finding from this data was the big range in the average daily rate of the different hotels in Portugal. The largest ADR was 5400 Euros while the least ADR was -6.38 Euros. This implies a range of 5406.38 Euros.
 
 **Which data wrangling skill was most useful in this exercise?**
 
-___________________________________________________________________________
+The select() function was most useful in this exercise because it allowed me to view only the  variables of the dataset that I needed to make my predictions and insights. 
 
 **What would you want to investigate further in this dataset?**
 
-___________________________________________________________________________
-___________________________________________________________________________
+I want to investigate the company variable and analyze how differnt booking companies are associated with lower or higher ADR's.
 
 ---
 
