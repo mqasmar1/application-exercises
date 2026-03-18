@@ -1,6 +1,6 @@
 ---
 title: "AE 05 - Nobel Winners - Data Import and Export"
-author: "Your Name"
+author: "Max Asmar"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -77,8 +77,8 @@ ae-05-import-export/
 Let's first load the data from the `nobel.csv` file in the `data-raw` folder.
 
 **Fill in the blanks:**
-```{r read-nobel, eval = FALSE}
-nobel <- read_csv("___")
+```{r read-nobel, eval = TRUE}
+nobel <- read_csv("data-raw/nobel.csv")
 ```
 
 **Hint:** The file path is `"data-raw/nobel.csv"`
@@ -90,7 +90,7 @@ nobel <- read_csv("___")
 - Returns a tibble (tidyverse data frame)
 
 **Verify it worked:**
-```{r check-nobel, eval = FALSE}
+```{r check-nobel, eval = TRUE}
 # Look at the structure
 glimpse(nobel)
 
@@ -100,13 +100,13 @@ head(nobel)
 
 **Task 1.1:** How many Nobel laureates are in the dataset?
 
-**Your answer:** _____ laureates
+**Your answer:** 935 laureates
 
 **Task 1.2:** What variables are in the dataset?
 
 **Your answer:**
 
-___________________________________________________________________________
+The variables in the dataseet are firstname, surname, year, category, affiliation, city, country, born_date, died_date, gender, born_city, born_countrry, born_country_code, died_city, died_country, died_country_code, overall_motivation, share, motivation, born_country_original, born_city_original, died_country_original, died_city_original, city_original, and country_original.
 
 ---
 
@@ -118,7 +118,7 @@ Nobel prizes are awarded in different categories. Let's split the data into two 
 - **Non-STEM laureates:** Literature, Peace, Economics
 
 **First, explore the categories:**
-```{r explore-categories, eval = FALSE}
+```{r explore-categories, eval = TRUE}
 # See what categories exist
 nobel %>%
   count(category)
@@ -129,10 +129,10 @@ nobel %>%
 **Non-STEM categories:** Literature, Peace, Economic Sciences
 
 **Task 2.1:** Fill in the blanks to create a dataset of STEM laureates.
-```{r stem-laureates, eval = FALSE}
+```{r stem-laureates, eval = TRUE}
 # STEM laureates
 nobel_stem <- nobel %>%
-  filter(category %in% c("___", "___", "___"))
+  filter(category %in% c("Physics", "Chemistry", "Medicine"))
 ```
 
 **Hints:**
@@ -142,26 +142,26 @@ nobel_stem <- nobel %>%
 - Use `%in%` to check if category is in a vector of values
 
 **How many STEM laureates are there?**
-```{r count-stem, eval = FALSE}
+```{r count-stem, eval = TRUE}
 nrow(nobel_stem)
 ```
 
-**Your answer:** _____ STEM laureates
+**Your answer:** There are 607 STEM laureates
 
 **Task 2.2:** Fill in the blanks to create a dataset of non-STEM laureates.
 
 **Option 1: List the non-STEM categories explicitly**
-```{r non-stem-option1, eval = FALSE}
+```{r non-stem-option1, eval = TRUE}
 # Non-STEM laureates (explicit)
 nobel_non_stem <- nobel %>%
-  filter(category %in% c("___", "___", "___"))
+  filter(category %in% c("Literature", "Peace", "Economics"))
 ```
 
 **Option 2: Use NOT IN to exclude STEM categories**
-```{r non-stem-option2, eval = FALSE}
+```{r non-stem-option2, eval = TRUE}
 # Non-STEM laureates (using negation)
 nobel_non_stem <- nobel %>%
-  filter(!(category %in% c("Physics", "Chemistry", "Physiology or Medicine")))
+  filter(!(category %in% c("Physics", "Chemistry", "Medicine")))
 ```
 
 **Explanation of `!(x %in% y)`:**
@@ -171,19 +171,19 @@ nobel_non_stem <- nobel %>%
 - Together: "NOT in the list"
 
 **How many non-STEM laureates are there?**
-```{r count-non-stem, eval = FALSE}
+```{r count-non-stem, eval = TRUE}
 nrow(nobel_non_stem)
 ```
 
-**Your answer:** _____ non-STEM laureates
+**Your answer:** There are 328 non-STEM laureates.
 
 **Verification check:**
-```{r verify-split, eval = FALSE}
+```{r verify-split, eval = TRUE}
 # STEM + non-STEM should equal total
 nrow(nobel_stem) + nrow(nobel_non_stem) == nrow(nobel)
 ```
 
-**Does this equal TRUE?** _____
+**Does this equal TRUE?** Yes, the number of nobel_stem laureates plus the number of nobel_non_stem laureates equals the number of all laureates.
 
 ---
 
