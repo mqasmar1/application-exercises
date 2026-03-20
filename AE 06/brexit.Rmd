@@ -1,6 +1,6 @@
 ---
 title: "AE 06 - Brexit - Telling Different Stories with Data"
-author: "Your Name"
+author: "Max Asmar"
 date: "`r Sys.Date()`"
 output: 
   pdf_document:
@@ -162,7 +162,7 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 ## Exercise 1: Free Scales
 
 Add `scales = "free_x"` as an argument to the `facet_wrap()` function. How does the visualisation change? How is the story this visualisation telling different than the story the original plot tells?
-```{r free-scales, eval=FALSE, fig.width=10, fig.height=4}
+```{r free-scales, eval=TRUE, fig.width=10, fig.height=4}
 # Remember to change eval=FALSE to eval=TRUE!
 
 ggplot(brexit, aes(y = opinion, fill = opinion)) +
@@ -170,7 +170,7 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
   facet_wrap(~region,
     nrow = 1, 
     labeller = label_wrap_gen(width = 12),
-    scales = ___  # Add "free_x" here
+    scales = "free_x"  # Add "free_x" here
   ) +
   guides(fill = "none") +
   labs(
@@ -198,24 +198,21 @@ ggplot(brexit, aes(y = opinion, fill = opinion)) +
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
-___________________________________________________________________________
+Using scales = "free_x" I am now able to have the data fill up most of each facet in the graph which allows me to better assess the distribution of "Wrong", "Right", and "Don't know" opinions for the Brexit.
 
 **Task 1.2:** How is the story this visualization tells different from the original plot?
 
 **Your answer:**
 
-**Original plot emphasizes:** ____________________________________________
+**Original plot emphasizes:** The original plot emphasizes the quantity of votes for each region (facet).
 
-**Free scales plot emphasizes:** __________________________________________
+**Free scales plot emphasizes:** The free scales plot emphasizes the relative proportions of votes for each region (facet).
 
 **Task 1.3:** Which visualization would be misleading if you wanted to compare the absolute number of responses across regions? Why?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+The free scales plot would be misleading if I wanted to compare the absolute number of responses across regions because the free scales plot does not standardize the scale across regions. For example, in the free scales plot, at a first glance it appears that the number of votes in London was equal to the number of votes in the Rest of South whereas in the original plot the rest of the South it is significantly easier to determine that there are more votes because the bars are bigger.
 
 ---
 
@@ -226,13 +223,13 @@ First, calculate the proportion of wrong, right, and don't know answers in each 
 **How is the story this visualisation telling different than the story the original plot tells?**
 
 **Task 2.1:** Calculate proportions by region and opinion.
-```{r calculate-proportions, eval=FALSE}
+```{r calculate-proportions, eval=TRUE}
 # Remember to change eval=FALSE to eval=TRUE!
 
 brexit_prop <- brexit %>%
-  count(___, ___) %>%           # Count by region and opinion
-  group_by(___) %>%             # Group by region
-  mutate(prop = n / sum(___))   # Calculate proportion within each region
+  count(region, opinion) %>%           # Count by region and opinion
+  group_by(region) %>%             # Group by region
+  mutate(prop = n / sum(n))   # Calculate proportion within each region
 
 brexit_prop
 ```
@@ -249,10 +246,10 @@ brexit_prop
 - Each region's proportions sum to 1 (100%)
 
 **Task 2.2:** Plot the proportions with improved axis labeling.
-```{r plot-proportions, eval=FALSE, fig.width=10, fig.height=4}
+```{r plot-proportions, eval=TRUE, fig.width=10, fig.height=4}
 # Remember to change eval=FALSE to eval=TRUE!
 
-ggplot(brexit_prop, aes(y = opinion, x = ___, fill = opinion)) +
+ggplot(brexit_prop, aes(y = opinion, x = prop, fill = opinion)) +
   geom_col() +                  # Use geom_col() for already-calculated values
   facet_wrap(~region, nrow = 1, labeller = label_wrap_gen(width = 12)) +
   guides(fill = "none") +
@@ -260,7 +257,7 @@ ggplot(brexit_prop, aes(y = opinion, x = ___, fill = opinion)) +
     title = "Was Britain right/wrong to vote to leave EU?",
     subtitle = "YouGov Survey Results, 2-3 September 2019",
     caption = "Source: bit.ly/2lCJZVg",
-    x = "___",                  # Label for proportions
+    x = "Proportion",                  # Label for proportions
     y = NULL
   ) +
   scale_fill_manual(values = c(
@@ -268,7 +265,7 @@ ggplot(brexit_prop, aes(y = opinion, x = ___, fill = opinion)) +
     "Right" = "#67a9cf",
     "Don't know" = "gray"
   )) +
-  scale_x_continuous(labels = ___) +  # Format x-axis as percentages
+  scale_x_continuous(labels = percent_format()) +  # Format x-axis as percentages
   theme_minimal()
 ```
 
@@ -283,11 +280,12 @@ ggplot(brexit_prop, aes(y = opinion, x = ___, fill = opinion)) +
 
 **Your answer:**
 
-**Original plot (counts) shows:** _________________________________________
+**Original plot (counts) shows:** The original plot shows the number of "Wrong
+, "Right", and "Don't know" votes for each region.
 
-**Proportion plot shows:** ________________________________________________
+**Proportion plot shows:** The proportion plot shows the percentage of "Wrong", "Right", and "Don't know' votes for each region, out of the total number of votes for that region.
 
-**Which regions have the most "Wrong" responses as a proportion?** _______
+**Which regions have the most "Wrong" responses as a proportion?** Scotland has the most ""Wrong" responses as a proportion.
 
 ---
 
@@ -298,25 +296,25 @@ Recreate the same visualisation from the previous exercise, this time dodging th
 **How is the story this visualisation telling different than the story the previous plot tells?**
 
 **Task 3.1:** Create a dodged bar plot.
-```{r dodged-bars, eval=FALSE, fig.width=8, fig.height=5}
+```{r dodged-bars, eval=TRUE, fig.width=8, fig.height=5}
 # Remember to change eval=FALSE to eval=TRUE!
 
-ggplot(brexit_prop, aes(x = ___, y = ___, fill = ___)) +
-  geom_col(position = "___") +  # "dodge" makes bars side-by-side
+ggplot(brexit_prop, aes(x = region, y = prop, fill = opinion)) +
+  geom_col(position = "dodge") +  # "dodge" makes bars side-by-side
   labs(
     title = "Was Britain right/wrong to vote to leave EU?",
     subtitle = "YouGov Survey Results, 2-3 September 2019",
     caption = "Source: bit.ly/2lCJZVg",
-    x = "___",                  # Region label
-    y = "___",                  # Proportion label
-    fill = "___"                # Better legend title
+    x = "Region",                  # Region label
+    y = "Proportion",                  # Proportion label
+    fill = "Opinion"                # Better legend title
   ) +
   scale_fill_manual(values = c(
     "Wrong" = "#ef8a62",
     "Right" = "#67a9cf",
     "Don't know" = "gray"
   )) +
-  scale_y_continuous(labels = ___) +  # Format y-axis as percentages
+  scale_y_continuous(labels = percent_format()) +  # Format y-axis as percentages
   theme_minimal()
 ```
 
@@ -335,13 +333,13 @@ ggplot(brexit_prop, aes(x = ___, y = ___, fill = ___)) +
 
 **Your answer:**
 
-**Faceted plot makes it easier to:** ______________________________________
+**Faceted plot makes it easier to:** The faceted plot makes it easier to compare distributions within each facet.
 
-**Dodged plot makes it easier to:** _______________________________________
+**Dodged plot makes it easier to:** The dodged plot makes it easier to compare distributions across regions/groups.
 
 **Task 3.3:** Which region shows the strongest opinion one way or the other (least "Don't know")?
 
-**Your answer:** _____
+**Your answer:** Scotland has the smallest percentage of "Don't know" votes. Less than 10% of Scotland voters voted "Don't know".
 
 ---
 
@@ -351,24 +349,19 @@ ggplot(brexit_prop, aes(x = ___, y = ___, fill = ___)) +
 
 **Your answer:**
 
-I would use the _______________ plot because ______________________________
-___________________________________________________________________________
-___________________________________________________________________________
+I would use the dodged plot because it is very intuitive to see that Scotland has the highest proportion of "Wrong" voters. I can infer this because the highest "Wrong" bar on the dodged plot belongs to Scotland. Although the proportion plot that is not dodged from Exercise 2 also shows that Scotland has the highest proportion of "Wrong" voters, I prefer vertical graphs.
 
 **Task 4.2:** You're writing a report comparing absolute numbers of respondents across regions. Which visualization would be most appropriate? Why?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
+The original plot without free scales and without dodged plot would be the most appropriate because it shows the number of voters across regions faceted by region.
 
 **Task 4.3:** What's one thing you learned about how visualization choices affect the story you tell?
 
 **Your answer:**
 
-___________________________________________________________________________
-___________________________________________________________________________
-___________________________________________________________________________
+I notice that choosing to show proportions versus raw numbers can impact how readers view the disparities and comparisons across groups (regions in this case). For example, Scotland barely has any voters for this issue but it has the highest percentage of "Wrong" voters. Without knowing the number of voters, someone could misinterpret the impact of Scotland constituents on national policy.
 
 ---
 
