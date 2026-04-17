@@ -1,6 +1,6 @@
 ---
 title: "AE 07 - Web Scraping IMDB"
-author: "Your Name"
+author: "Max Asmar"
 date: "`r Sys.Date()`"
 output: 
   html_document:
@@ -36,7 +36,7 @@ In this application exercise, you'll learn the basics of **web scraping** - the 
 
 **Note:** This AE uses R scripts (`.R` files) instead of R Markdown for parts of the exercise. You'll work with four scripts:
 
-1.  `01-imdb-250movies.R` - Scrape top 250 movies (with blanks to fill)
+1.  `01-imdb-250movies.R` - Scrape top 25 movies (with blanks to fill)
 2.  `02-imdb-tvshows.R` - Scrape popular TV shows (with blanks to fill)
 3.  `03-imdb-250movies-complete.R` - Complete solution for movies
 4.  `04-imdb-tvshows-complete.R` - Complete solution for TV shows
@@ -104,11 +104,11 @@ CSS selectors identify specific elements on a webpage. To find them:
 
 ------------------------------------------------------------------------
 
-## Part 1: Scraping Top 250 Movies
+## Part 1: Scraping Top 25 Movies
 
 ### Overview
 
-We'll scrape IMDB's Top 250 Movies chart: <https://www.imdb.com/chart/top>
+We'll work from a locally saved copy of IMDB's Top 25 Movies chart. The live page is at <https://www.imdb.com/chart/top> if you'd like to inspect it in your browser.
 
 This page lists the highest-rated movies on IMDB. For each movie, we'll extract:
 
@@ -120,28 +120,31 @@ This page lists the highest-rated movies on IMDB. For each movie, we'll extract:
 
 Before we code, let's understand the webpage structure.
 
-**Task 1.1:** Open <https://www.imdb.com/chart/top> in your browser.
+**Task 1.1:** Open the saved file `imdb-top-250.html` in your browser by double-clicking it in the Files pane, OR visit <https://www.imdb.com/chart/top> to inspect the live page structure.
 
 **Task 1.2:** Right-click on the first movie title ("The Shawshank Redemption" or whatever is #1 now) and select "Inspect" or "Inspect Element."
 
 **Task 1.3:** Look at the HTML structure. You'll see something like:
 
 ```{html}
-<td class="titleColumn">
-  <a href="/title/tt0111161/">The Shawshank Redemption</a>
-  <span class="secondaryInfo">(1994)</span>
-</td>
+<a class="ipc-title-link-wrapper" href="/title/tt0111161/">
+  <h3 class="ipc-title__text">The Shawshank Redemption</h3>
+</a>
+<span class="cli-title-metadata-item">1994</span>
+<span class="cli-title-metadata-item">2h 22m</span>
+<span class="cli-title-metadata-item">R</span>
+<span class="ipc-rating-star--rating">9.3</span>
 ```
 
 **What patterns do you notice?**
 
 **Your answer:**
 
--   Movie titles are in: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   Movie titles are in: `.ipc-title-link-wrapper .ipc-title__text`
 
--   Years are in: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   Years are in: `.cli-title-metadata-item` (first of every 3 items per movie)
 
--   Ratings are in: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   Ratings are in: `.ipc-rating-star--rating`
 
 ------------------------------------------------------------------------
 
@@ -170,17 +173,19 @@ You'll see a script with blanks to fill in. The structure is:
 
 **Task 2.3:** Run your code line by line (Ctrl+Enter or Cmd+Enter) or select all and run.
 
-**Task 2.4:** Check your results. You should get a data frame with 250 movies. Run:
+**Task 2.4:** Check your results. You should get a data frame with 25 movies. Run:
 
 ```{r check-movies, eval=FALSE}
 # After running your script, these should work:
-head(imdb_top_250)
-nrow(imdb_top_250)  # Should be 250
+head(imdb_top_25)
+nrow(imdb_top_25)  # Should be 25
 ```
 
-**How many movies did you successfully scrape?** \_\_\_\_\_\_
+**How many movies did you successfully scrape?** I successfully scraped 25 movies.
 
-**What is the #1 ranked movie?** \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+> **Note on the dataset size:** The saved HTML file contains 25 movies — the top of IMDB's list. IMDB loads additional entries dynamically as you scroll, so a standard browser save captures only what was initially rendered. The scraping concepts you're practicing here apply equally whether you're working with 25 rows or 25,000.
+
+**What is the #1 ranked movie?** The number 1 ranked movie in the dataset is The Shawshank Redemption.
 
 ------------------------------------------------------------------------
 
@@ -191,12 +196,12 @@ Let's break down what the movies script does:
 **Task 3.1:** Explain what this code does in plain English:
 
 ```{r explain-read}
-page <- read_html("https://www.imdb.com/chart/top")
+page <- read_html("imdb-top-250.html")
 ```
 
 **Your answer:**
 
-------------------------------------------------------------------------
+This code makes a new object called page that contains the data in the imdb-top-250.html file.
 
 **Task 3.2:** Explain what the pipe `%>%` does in this code:
 
@@ -208,26 +213,24 @@ titles <- page %>%
 
 **Your answer:**
 
-------------------------------------------------------------------------
+The pipe `%>%` lets R know that the explain-pipe code chunk has instructions that are stringed together in a sequence.
 
-**Task 3.3:** The year extraction uses `str_remove()` twice. Why?
+**Task 3.3:** The year extraction uses `seq()` with `by = 3`. Why?
 
 ```{r explain-str-remove}
-years <- page %>%
-  html_nodes(".secondaryInfo") %>%
-  html_text() %>%
-  str_remove("\\(") %>%
-  str_remove("\\)") %>%
+years_raw <- page %>%
+  html_nodes(".cli-title-metadata-item") %>%
+  html_text()
+
+years <- years_raw[seq(1, length(years_raw), by = 3)] %>%
   as.numeric()
 ```
 
-**Hint:** Look at the raw HTML - years appear as `(1994)`
+**Hint:** Each movie has three `.cli-title-metadata-item` spans: year, runtime, and rating category. `seq(1, length(years_raw), by = 3)` picks every 1st item — the year — skipping the other two.
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+The year extraction uses `seq()` with `by = 3` so that when we scrape the year, we are not also scraping the runtime and rating category, because they have the same name: `.cli-title-metadata-item`
 
 ### Exercise 4: Verify Your Data
 
@@ -235,30 +238,26 @@ years <- page %>%
 
 ```{r verify-movies}
 # Check structure
-str(imdb_top_250)
+str(imdb_top_25)
 
 # Look at the top 10
-imdb_top_250 %>%
+imdb_top_25 %>%
   slice(1:10)
 
 # Check for missing values
-imdb_top_250 %>%
+imdb_top_25 %>%
   summarise(
-    missing_titles = sum(is.na(___)),
-    missing_ratings = sum(is.na(___)),
-    missing_years = sum(is.na(___))
+    missing_titles = sum(is.na(titles)),
+    missing_ratings = sum(is.na(ratings)),
+    missing_years = sum(is.na(years))
   )
 ```
 
-**How many missing values do you have?** \_\_\_\_\_\_\_
+**How many missing values do you have?** I have 0 missing values in the dataset. I found this by running the above code in console.
 
 **If you have missing values, what might have gone wrong?**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+N/A. If I had missing values, it could be because the HTML file did not have the complete information from the IMDB website. Missing values could also arise from using the wrong CSS selector. 
 
 ## Part 2: Scraping Popular TV Shows
 
@@ -274,9 +273,22 @@ This is similar to movies, but with some key differences:
 
 ------------------------------------------------------------------------
 
-### Exercise 5: Inspect the TV Shows Page
+### Exercise 5: Save and Inspect the TV Shows Page
 
-**Task 5.1:** Open <https://www.imdb.com/chart/tvmeter> in your browser.
+**Before you can scrape TV shows, you need to save the page locally** — just like we did for movies. IMDB blocks live scraping from JupyterHub.
+
+**Task 5.0: Save the TV meter page**
+
+1. Open <https://www.imdb.com/chart/tvmeter> in Chrome or Firefox
+2. Wait for the full page to load
+3. Press **Ctrl+S** (Windows/Linux) or **Cmd+S** (Mac)
+4. In the Save dialog:
+   - Set *Save as type* to **Webpage, Complete** (Chrome) or **Web Page, complete** (Firefox)
+   - Name the file **`imdb-tvmeter.html`**
+   - Save it into your **AE 07 folder** (same folder as this .Rmd)
+5. Back in RStudio, verify you can see `imdb-tvmeter.html` in the Files pane
+
+**Task 5.1:** Open the saved file `imdb-tvmeter.html` in your browser by double-clicking it in the Files pane. You can also visit <https://www.imdb.com/chart/tvmeter> to inspect the live page structure.
 
 **Task 5.2:** Inspect the first TV show. How is the HTML structure different from the movies page?
 
@@ -304,8 +316,8 @@ This is similar to movies, but with some key differences:
 
 **Key differences to note:**
 
--   The URL is different
--   The CSS selectors are different
+-   You're reading from the local file `imdb-tvmeter.html` (not a live URL)
+-   The CSS selectors may differ — inspect your saved file to confirm
 -   You need to extract and clean the show names (they include extra info)
 -   You'll manually add genre, runtime, and episode count for the first 3 shows
 
@@ -411,20 +423,20 @@ Now that you've scraped both datasets, let's analyze them!
 
 ### Exercise 9: Movie Analysis
 
-**Task 9.1:** What decade has the most movies in the top 250?
+**Task 9.1:** What decade has the most movies in the top 25?
 
 ```{r decade-analysis}
-imdb_top_250 %>%
+imdb_top_25 %>%
   mutate(decade = floor(year / 10) * 10) %>%
   count(decade, sort = TRUE)
 ```
 
-**Answer:** The \_\_\_\_\_\_s have the most movies in the top 250.
+**Answer:** The \_\_\_\_\_\_s have the most movies in the top 25.
 
-**Task 9.2:** What's the average rating of movies in the top 250?
+**Task 9.2:** What's the average rating of movies in the top 25?
 
 ```{r avg-rating}
-imdb_top_250 %>%
+imdb_top_25 %>%
   summarise(avg_rating = mean(___))
 ```
 
@@ -433,7 +445,7 @@ imdb_top_250 %>%
 **Task 9.3:** Create a visualization showing ratings over time:
 
 ```{r rating-over-time}
-ggplot(imdb_top_250, aes(x = ___, y = ___)) +
+ggplot(imdb_top_25, aes(x = ___, y = ___)) +
   geom_point(alpha = 0.5) +
   geom_smooth() +
   labs(
@@ -539,7 +551,7 @@ tvshows %>%
 
 ### Exercise 12: Scrape Additional Information
 
-**Challenge:** Pick one movie from the top 250 and scrape additional information from its individual page.
+**Challenge:** Pick one movie from the top 25 and scrape additional information from its individual page.
 
 **Task 12.1:** Choose a movie and visit its IMDB page. What additional information is available?
 
@@ -652,9 +664,10 @@ Once everything works in HTML:
 
 **Common issues:**
 
+-   **Error: "Failed to parse text" or empty results when using a URL:** IMDB blocks automated requests from cloud environments like JupyterHub. Use a locally saved HTML file with `read_html("filename.html")` instead of a live URL. See Task 5.0 for save instructions.
 -   **Error: "could not find function":** Load the packages (tidyverse, rvest)
--   **Empty or NULL results:** CSS selector might be wrong - double-check by inspecting the page
--   **Wrong number of elements:** The selector might be matching too many or too few elements
+-   **Empty or NULL results:** CSS selector might be wrong - double-check by inspecting the saved HTML file in your browser
+-   **Wrong number of elements:** The selector might be matching too many or too few elements. For years, remember to use `seq(..., by = 3)` to pick only year values from the metadata spans.
 -   **Strange text with `\n` or extra spaces:** Use `str_remove_all()` and `str_squish()` to clean
 -   **Can't convert to numeric:** Make sure you removed ALL non-numeric characters first
 
@@ -683,11 +696,11 @@ Once everything works in HTML:
 
 ## Data Dictionary
 
-### imdb_top_250
+### imdb_top_25
 
 | Variable | Type    | Description                              |
 |:---------|:--------|:-----------------------------------------|
-| rank     | integer | Ranking on IMDB Top 250 list (1-250)    |
+| rank     | integer | Ranking on IMDB Top 25 list (1-25)      |
 | title    | character | Movie title                             |
 | rating   | numeric | IMDB rating (0-10)                       |
 | year     | integer | Year of release                          |
