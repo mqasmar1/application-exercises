@@ -3,18 +3,26 @@ title: "AE 07 - Web Scraping IMDB"
 author: "Max Asmar"
 date: "`r Sys.Date()`"
 output: 
-  html_document:
-    toc: true
-    toc_float: true
-    code_folding: show
   pdf_document:
     toc: true
     latex_engine: xelatex
     keep_tex: false
+  html_document:
+    toc: true
+    toc_float: true
+    code_folding: show
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(warning = FALSE, message = FALSE, eval = FALSE)
+```
+
+```{r load-data, include=FALSE, eval=TRUE}
+# This chunk runs the complete movies script to create the imdb_top_25 object,
+# so that the analysis code chunks in Parts 4 and 5 will produce output when knitted.
+# You do NOT need to modify this chunk.
+source("03-imdb-250movies-complete.R")
+source("02-imdb-tvshows.R")
 ```
 
 ## Introduction
@@ -175,7 +183,7 @@ You'll see a script with blanks to fill in. The structure is:
 
 **Task 2.4:** Check your results. You should get a data frame with 25 movies. Run:
 
-```{r check-movies, eval=FALSE}
+```{r check-movies, eval=TRUE}
 # After running your script, these should work:
 head(imdb_top_25)
 nrow(imdb_top_25)  # Should be 25
@@ -185,9 +193,7 @@ nrow(imdb_top_25)  # Should be 25
 
 > **Note on the dataset size:** The saved HTML file contains 25 movies — the top of IMDB's list. IMDB loads additional entries dynamically as you scroll, so a standard browser save captures only what was initially rendered. The scraping concepts you're practicing here apply equally whether you're working with 25 rows or 25,000.
 
-**What is the #1 ranked movie?** The number 1 ranked movie in the dataset is The Shawshank Redemption.
-
-------------------------------------------------------------------------
+**What is the #1 ranked movie?** The number one ranked movie is The Shawshank Redemption. 
 
 ### Exercise 3: Understanding the Code
 
@@ -236,7 +242,7 @@ The year extraction uses `seq()` with `by = 3` so that when we scrape the year, 
 
 **Task 4.1:** Check if your scraping worked correctly. Fill in the code:
 
-```{r verify-movies}
+```{r verify-movies, eval=TRUE}
 # Check structure
 str(imdb_top_25)
 
@@ -253,11 +259,12 @@ imdb_top_25 %>%
   )
 ```
 
-**How many missing values do you have?** I have 0 missing values in the dataset. I found this by running the above code in console.
+**How many missing values do you have?** I have 0 missing values in the dataset.
 
 **If you have missing values, what might have gone wrong?**
 
 N/A. If I had missing values, it could be because the HTML file did not have the complete information from the IMDB website. Missing values could also arise from using the wrong CSS selector. 
+
 
 ## Part 2: Scraping Popular TV Shows
 
@@ -294,17 +301,15 @@ This is similar to movies, but with some key differences:
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+The HTML structure contains information such as the year and number of episodes and number of seasons for each TV show.
 
 **Task 5.3:** Note the CSS selectors you'll need for:
 
--   TV show names: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   TV show names: I need the ".ipc-title-link-wrapper .ipc-title__text" CSS selector.
 
--   Years: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   Years: I need the ".cli-title-metadata-item" CSS selector.
 
--   Ratings: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   Ratings: I need the ".ipc-rating-star--rating" CSS selector.
 
 ------------------------------------------------------------------------
 
@@ -325,24 +330,24 @@ This is similar to movies, but with some key differences:
 
 **Show #1:**
 
--   Name: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
--   Genre: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
--   Runtime (minutes): \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
--   Number of episodes: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   Name: The Boys
+-   Genre: Action, Comedy, Crime
+-   Runtime (minutes): 60 minutes
+-   Number of episodes: 40 episodes
 
 **Show #2:**
 
--   Name: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
--   Genre: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
--   Runtime (minutes): \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
--   Number of episodes: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   Name: The Pitt
+-   Genre: Medical Drama, Psychological Drama, Drama
+-   Runtime (minutes): 50 minutes
+-   Number of episodes: 45 episodes
 
 **Show #3:**
 
--   Name: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
--   Genre: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
--   Runtime (minutes): \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
--   Number of episodes: \_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+-   Name: Malcolm in the Middle: Life's Still Unfair
+-   Genre: Sitcom, Comedy, Drama
+-   Runtime (minutes): NA
+-   Number of episodes: 4
 
 **Task 6.4:** Add this information to your script using indexing:
 
@@ -361,23 +366,19 @@ tvshows$n_episode[1] <- 9                     # Replace with actual episodes
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+We use `tvshows$genre[1]` instead of creating a new data frame because we are building the dataframe manually by observation instead of scraping the whole list of TV shows.
 
 **Task 7.2:** What does the `[1]` mean in `tvshows$genre[1]`?
 
 **Your answer:**
 
-------------------------------------------------------------------------
+The `[1]` means that we are adding genere information to the **first** observation.
 
 **Task 7.3:** How would you add information for the 10th show?
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+I would change the `[1]` in `tvshows$genre[1]` to `[10]` so that it adds information to the 10th row instead of the first.
 
 ## Part 3: Comparing Approaches
 
@@ -387,35 +388,27 @@ tvshows$n_episode[1] <- 9                     # Replace with actual episodes
 
 **Easier in TV shows:**
 
-------------------------------------------------------------------------
+It was easier to load the CSS selectors that the TV shows had in common with the Movies such as rating and name.
 
 **Harder in TV shows:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+It is harder to load the dataset and create the dataframe because there are more variables for TV shows instead of movies that we are scraping, such as runtime and genre.
 
 **Task 8.2:** Why did we need to use `str_remove_all()` and `str_squish()` for TV show names but not movie titles?
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+We used `str_remove_all()` and `str_squish()` for TV show names because sometimes the TV shows had season numbers or episode counts that are not included in the title of the show. Movies do not have seasons or episode counts.
 
 **Task 8.3:** Looking at the complete scripts (`03-imdb-250movies-complete.R` and `04-imdb-tvshows-complete.R`), check your work. Did you get the CSS selectors correct?
 
 **What I got right:**
 
-------------------------------------------------------------------------
+I got the CSS selectors correct for both scripts, and they match the complete scripts. I was able to use the SelectorGadget Chrome extension to get the CSS selectors.
 
 **What I need to fix:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+N/A.
 
 ## Part 4: Exploring the Data
 
@@ -425,75 +418,67 @@ Now that you've scraped both datasets, let's analyze them!
 
 **Task 9.1:** What decade has the most movies in the top 25?
 
-```{r decade-analysis}
+```{r decade-analysis, eval=TRUE}
 imdb_top_25 %>%
   mutate(decade = floor(year / 10) * 10) %>%
   count(decade, sort = TRUE)
 ```
 
-**Answer:** The \_\_\_\_\_\_s have the most movies in the top 25.
+**Answer:** The 1990s have the most movies in the top 25.
 
 **Task 9.2:** What's the average rating of movies in the top 25?
 
-```{r avg-rating}
+```{r avg-rating, eval=TRUE}
 imdb_top_25 %>%
-  summarise(avg_rating = mean(___))
+  summarise(avg_rating = mean(rating))
 ```
 
-**Answer:** The average rating is \_\_\_\_\_\_
+**Answer:** The average rating is 8.81 stars.
 
 **Task 9.3:** Create a visualization showing ratings over time:
 
-```{r rating-over-time}
-ggplot(imdb_top_25, aes(x = ___, y = ___)) +
+```{r rating-over-time, eval=TRUE}
+ggplot(imdb_top_25, aes(x = year, y = rating)) +
   geom_point(alpha = 0.5) +
   geom_smooth() +
   labs(
-    title = "___",
-    x = "___",
-    y = "___"
+    title = "American Movie ratings across decades",
+    x = "Year",
+    y = "Rating out of 10 (stars)"
   )
 ```
 
 **What pattern do you see?**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+The American movie ratings appear to be the highest in the late 1960s, while the movie ratings appear to be the lowest around 1990. There seems to be the most net change from 1945 to the late 1960s.
 
 ### Exercise 10: TV Show Analysis
 
 **Task 10.1:** How many TV shows did you successfully scrape?
 
-```{r count-shows}
+```{r count-shows, eval=TRUE}
 nrow(tvshows)
 ```
 
-**Answer:** \_\_\_\_\_\_ shows
+**Answer:** 99 shows
 
 **Task 10.2:** What's the range of years for the TV shows?
 
-```{r year-range}
+```{r year-range, eval=TRUE}
 tvshows %>%
   summarise(
-    earliest = min(___, na.rm = TRUE),
-    latest = max(___, na.rm = TRUE)
+    earliest = min(year, na.rm = TRUE),
+    latest = max(year, na.rm = TRUE)
   )
 ```
 
-**Answer:** From \_\_\_\_\_ to \_\_\_\_\_
+**Answer:** From 1994 to 2026. I got this from the actual IMDB website because my script only prints 2026 for the year. I'm not sure why this is the case.
 
 **Task 10.3:** Based on the 3 shows where you added genre information, what genres seem popular?
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+Based on the 3 shows that I added genre information about, it seems that Comedy and Drama genres are the most popular right now.
 
 ## Part 5: Reflection on Web Scraping
 
@@ -503,9 +488,7 @@ tvshows %>%
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+The most challenging part of the exercise was troubleshooting that the IMDB blocks live scraping. The second most challenging part was getting the tvshows variable to initialize and find the right CSS selectors. For some reason, I am also unable to load the tvshows dataset into the RMD document, so I ran exercise 10 in console.
 
 **Task 11.2:** Why is it important to check a website's `robots.txt` file before scraping?
 
@@ -513,39 +496,25 @@ tvshows %>%
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+Checking a website's robots.txt file before scraping is important because it protects privacy and creative rights of the people involved in the data.
 
 **Task 11.3:** What are some situations where web scraping might NOT be appropriate or legal?
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+Web scraping might not be appropriate when it is not allowed in the Terms of Service or robots.txt file. Also, when the data has sensitive information about people it might be illegal to scrape.
 
 **Task 11.4:** If IMDB changed their website design tomorrow, what would happen to your scraping code?
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+My code would no longer work because the CSS selectors and their contents would change to match the updated information for tomorrow.
 
 **Task 11.5:** Why might an API (Application Programming Interface) be preferable to web scraping?
 
 **Your answer:**
 
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
-
-------------------------------------------------------------------------
+An API makes it easier to access the dataset without having to select CSS selectors. Also, APIs normally prevent misuse of the data and present the ethical considerations without having to read the robots.txt file. 
 
 ## Part 6: Challenge (Optional)
 
